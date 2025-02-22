@@ -9,23 +9,24 @@ function GanttChart({ data }) {
     if (chartRef.current) {
       const ctx = chartRef.current.getContext('2d');
 
-      // Destroy the previous chart instance if it exists
+
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
 
-      // Create a new chart instance
+
       chartInstanceRef.current = new Chart(ctx, {
         type: 'bar',
+        // type: 'line',
         data: {
           labels: data.map((d) => d.process),
           datasets: [
             {
               label: 'Burst Time',
               data: data.map((d) => d.end - d.start),
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1,
+              backgroundColor: 'rgba(33, 0, 219, 0.2)',
+              borderColor: 'rgb(0, 243, 231)',
+              borderWidth: 2,
             },
           ],
         },
@@ -39,7 +40,7 @@ function GanttChart({ data }) {
     }
   }, [data]);
 
-  // Cleanup the chart instance when the component unmounts
+ 
   React.useEffect(() => {
     return () => {
       if (chartInstanceRef.current) {
