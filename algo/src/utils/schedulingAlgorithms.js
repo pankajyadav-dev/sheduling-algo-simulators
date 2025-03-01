@@ -1,26 +1,31 @@
 
 export const calculateScheduling = (processes, algorithm, timeQuantum = 2) => {
+  const validProcesses = processes.filter(process => process.burstTime > 0);
+
+  if (validProcesses.length === 0) {
+    throw new Error('No valid processes to schedule');
+  }
   switch (algorithm) {
     case 'FCFS':
-      return firstComeFirstServed(processes);
+      return firstComeFirstServed(validProcesses);
     case 'Priority':
-      return priorityScheduling(processes);
+      return priorityScheduling(validProcesses);
     case 'MultilevelQueue':
-      return multilevelQueueScheduling(processes, timeQuantum);
+      return multilevelQueueScheduling(validProcesses, timeQuantum);
     case 'SJF':
-      return shortestJobFirst(processes);
+      return shortestJobFirst(validProcesses);
     case 'RoundRobin':
-      return roundRobin(processes, timeQuantum);
+      return roundRobin(validProcesses, timeQuantum);
     case 'SRTF':
-      return shortestRemainingTimeFirst(processes);
+      return shortestRemainingTimeFirst(validProcesses);
     case 'HRRN':
-      return highestResponseRatioNext(processes);
+      return highestResponseRatioNext(validProcesses);
     case 'LJF':
-      return longestJobFirst(processes);
+      return longestJobFirst(validProcesses);
     case 'LRTF':
-      return longestRemainingTimeFirst(processes);
+      return longestRemainingTimeFirst(validProcesses);
     case 'SJN':
-      return shortestJobNext(processes);
+      return shortestJobNext(validProcesses);
     default:
       throw new Error('Invalid scheduling algorithm');
   }
