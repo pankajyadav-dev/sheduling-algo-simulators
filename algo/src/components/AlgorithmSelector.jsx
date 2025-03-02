@@ -30,7 +30,7 @@ function AlgorithmSelector({ algorithm, setAlgorithm, timeQuantum, setTimeQuantu
           <input
             type="number"
             onChange={(e) => setTimeQuantum(parseInt(e.target.value))}
-            className="mt-1 block border rounded-md"
+            className="mt-1 block border p-2 rounded"
             placeholder="Enter time quantum"
           />
         </div>

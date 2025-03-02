@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { MdEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
+import { MdEdit, MdDelete, MdAdd, MdRefresh } from "react-icons/md";
 
 function ProcessInputForm({ processes, setProcesses, timeQuantum, setTimeQuantum, algorithmstate }) {
   const [process, setProcess] = useState({ id: '', arrivalTime: 0, burstTime: 0, priority: 0, queueId: 0 });
@@ -21,12 +20,13 @@ function ProcessInputForm({ processes, setProcesses, timeQuantum, setTimeQuantum
     }
     setProcess({ id: '', arrivalTime: 0, burstTime: 0, priority: 0, queueId: 0 });
   };
+
   const handleResetQueue = () => {
-    setProcesses([]);  // Clears the processes array
-    setNextProcessId(1);  // Resets the process ID counter
-    setProcess({ id: '', arrivalTime: 0, burstTime: 0, priority: 0, queueId: 0 });  // Resets input fields
-    setEditMode(false);  // Exits edit mode if active
-    setEditId(null);  // Clears edit ID
+    setProcesses([]);
+    setNextProcessId(1);
+    setProcess({ id: '', arrivalTime: 0, burstTime: 0, priority: 0, queueId: 0 });
+    setEditMode(false);
+    setEditId(null);
   };
 
   const handleEditProcess = (proc) => {
@@ -40,80 +40,115 @@ function ProcessInputForm({ processes, setProcesses, timeQuantum, setTimeQuantum
   };
 
   return (
-    <div className="ml-8 mb-8 flex flex-col flex-wrap">
-      <h2 className="text-xl font-semibold mb-4">{editMode ? 'Edit Process' : 'Add Processes'}</h2>
-      <div className="flex gap-4">
-        <label htmlFor="arrivalTime" className='text-white'>Arrival Time</label>
-        <input
-          type="number"
-          placeholder="Arrival Time"
-          value={process.arrivalTime}
-          onChange={(e) => setProcess({ ...process, arrivalTime: parseInt(e.target.value) })}
-          className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <label htmlFor="burstTime" className='text-white'>Burst Time</label>
-        <input
-          type="number"
-          placeholder="Burst Time"
-          value={process.burstTime}
-          onChange={(e) => setProcess({ ...process, burstTime: parseInt(e.target.value) })}
-          className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <label htmlFor="priority" className='text-white'>Priority</label>
-        <input
-          type="number"
-          placeholder="Priority"
-          value={process.priority}
-          onChange={(e) => setProcess({ ...process, priority: parseInt(e.target.value) })}
-          className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {algorithmstate && (
-          <>
-            <label htmlFor="queueId" className='text-white'>Queue ID</label>
+    <div className="mx-4 sm:mx-8 mb-8 flex flex-col lg:flex-row gap-8">
+      <div className="flex-1 bg-gray-800 rounded-xl p-6 shadow-lg">
+        <h2 className="text-2xl font-bold text-blue-400 mb-6">
+          {editMode ? 'Edit Process' : 'Add New Process'}
+        </h2>
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <label htmlFor="arrivalTime" className="text-gray-300 font-medium w-full sm:w-32">Arrival Time</label>
             <input
               type="number"
-              placeholder="Queue ID"
-              value={process.queueId}
-              onChange={(e) => setProcess({ ...process, queueId: parseInt(e.target.value) })}
-              className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter arrival time"
+              value={process.arrivalTime}
+              onChange={(e) => setProcess({ ...process, arrivalTime: parseInt(e.target.value) })}
+              className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
             />
-          </>
-        )}
-        <button onClick={handleAddProcess} className="bg-green-500 text-white px-4 py-2 rounded">
-          {editMode ? 'Update Process' : 'Add Process'}
-        </button>
-
-      </div>
-
-      <h1 className='text-xl font-semibold mb-4'>Processes in Queue</h1>
-      <div className='border-2 border-blue-900 rounded-lg p-4 w-fit'>
-        <div className='flex gap-4 border-b-2 border-blue-900 pb-2'>
-          <div className='w-35'>Process</div>
-          <div className='w-35'>Arrival Time</div>
-          <div className='w-35'>Burst Time</div>
-          <div className='w-35'>Priority</div>
-          {algorithmstate && <div className='w-35'>Queue ID</div>}
-          <div className='w-35'>Actions</div>
-        </div>
-        {processes.map((proc) => (
-          <div className='flex gap-4 items-center' key={proc.id}>
-            <div className='w-35'>{proc.id}</div>
-            <div className='w-35'>{proc.arrivalTime}</div>
-            <div className='w-35'>{proc.burstTime}</div>
-            <div className='w-35'>{proc.priority}</div>
-            {algorithmstate && <div className='w-35'>{proc.queueId}</div>}
-            <button onClick={() => handleEditProcess(proc)}>
-              <MdEdit />
+          </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <label htmlFor="burstTime" className="text-gray-300 font-medium w-full sm:w-32">Burst Time</label>
+            <input
+              type="number"
+              placeholder="Enter burst time"
+              value={process.burstTime}
+              onChange={(e) => setProcess({ ...process, burstTime: parseInt(e.target.value) })}
+              className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
+            />
+          </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <label htmlFor="priority" className="text-gray-300 font-medium w-full sm:w-32">Priority</label>
+            <input
+              type="number"
+              placeholder="Enter priority"
+              value={process.priority}
+              onChange={(e) => setProcess({ ...process, priority: parseInt(e.target.value) })}
+              className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
+            />
+          </div>
+          {algorithmstate && (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <label htmlFor="queueId" className="text-gray-300 font-medium w-full sm:w-32">Queue ID</label>
+              <input
+                type="number"
+                placeholder="Enter queue ID"
+                value={process.queueId}
+                onChange={(e) => setProcess({ ...process, queueId: parseInt(e.target.value) })}
+                className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
+              />
+            </div>
+          )}
+          <div className="flex flex-col sm:flex-row gap-4 mt-6">
+            <button 
+              onClick={handleAddProcess} 
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-blue-800 transition duration-300 w-full sm:flex-1"
+            >
+              <MdAdd size={20} />
+              {editMode ? 'Update Process' : 'Add Process'}
             </button>
-            <button onClick={() => handleDeleteProcess(proc.id)} >
-              <MdDelete />
+            <button 
+              onClick={handleResetQueue} 
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-lg hover:from-red-600 hover:to-red-800 transition duration-300 w-full sm:flex-1"
+            >
+              <MdRefresh size={20} />
+              Reset Queue
             </button>
           </div>
-        ))}
+        </div>
       </div>
-      <button onClick={handleResetQueue} className="bg-red-500 text-white px-4 py-2 rounded mt-4">
-         Reset Queue
-      </button>
+
+      <div className="flex-1">
+        {processes.length > 0 && (
+          <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-blue-400 mb-6">Process Queue</h2>
+            <div className="overflow-hidden rounded-xl border-2 border-gray-700">
+              <div className="bg-gray-700 flex gap-4 p-4 font-medium text-gray-200">
+                <div className="flex-1">Process</div>
+                <div className="flex-1">Arrival Time</div>
+                <div className="flex-1">Burst Time</div>
+                <div className="flex-1">Priority</div>
+                {algorithmstate && <div className="flex-1">Queue ID</div>}
+                <div className="w-24">Actions</div>
+              </div>
+              <div className="divide-y divide-gray-700">
+                {processes.map((proc) => (
+                  <div className="flex items-center gap-4 p-4 hover:bg-gray-700/50 transition duration-200" key={proc.id}>
+                    <div className="flex-1 text-blue-400 font-medium">{proc.id}</div>
+                    <div className="flex-1 text-gray-300">{proc.arrivalTime}</div>
+                    <div className="flex-1 text-gray-300">{proc.burstTime}</div>
+                    <div className="flex-1 text-gray-300">{proc.priority}</div>
+                    {algorithmstate && <div className="flex-1 text-gray-300">{proc.queueId}</div>}
+                    <div className="w-24 flex gap-3">
+                      <button 
+                        onClick={() => handleEditProcess(proc)}
+                        className="text-blue-400 hover:text-blue-300 transition duration-200"
+                      >
+                        <MdEdit size={20} />
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteProcess(proc.id)}
+                        className="text-red-400 hover:text-red-300 transition duration-200"
+                      >
+                        <MdDelete size={20} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
