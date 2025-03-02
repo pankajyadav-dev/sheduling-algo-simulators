@@ -40,106 +40,106 @@ function ProcessInputForm({ processes, setProcesses, timeQuantum, setTimeQuantum
   };
 
   return (
-    <div className="mx-4 sm:mx-8 mb-8 flex flex-col lg:flex-row gap-8">
-      <div className="flex-1 bg-gray-800 rounded-xl p-6 shadow-lg">
-        <h2 className="text-2xl font-bold text-blue-400 mb-6">
+    <div className="w-full h-full flex flex-col lg:flex-row gap-4 p-2">
+      <div className="w-full lg:w-1/2 bg-gray-800 rounded-lg p-4">
+        <h2 className="text-xl font-bold text-blue-400 mb-4">
           {editMode ? 'Edit Process' : 'Add New Process'}
         </h2>
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <label htmlFor="arrivalTime" className="text-gray-300 font-medium w-full sm:w-32">Arrival Time</label>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <label className="text-gray-300 font-medium w-24 text-sm">Arrival Time</label>
             <input
               type="number"
               placeholder="Enter arrival time"
               value={process.arrivalTime}
               onChange={(e) => setProcess({ ...process, arrivalTime: parseInt(e.target.value) })}
-              className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
+              className="bg-gray-700 text-white border border-gray-600 p-2 rounded focus:outline-none focus:border-blue-500 w-full text-sm"
             />
           </div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <label htmlFor="burstTime" className="text-gray-300 font-medium w-full sm:w-32">Burst Time</label>
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <label className="text-gray-300 font-medium w-24 text-sm">Burst Time</label>
             <input
               type="number"
               placeholder="Enter burst time"
               value={process.burstTime}
               onChange={(e) => setProcess({ ...process, burstTime: parseInt(e.target.value) })}
-              className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
+              className="bg-gray-700 text-white border border-gray-600 p-2 rounded focus:outline-none focus:border-blue-500 w-full text-sm"
             />
           </div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <label htmlFor="priority" className="text-gray-300 font-medium w-full sm:w-32">Priority</label>
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <label className="text-gray-300 font-medium w-24 text-sm">Priority</label>
             <input
               type="number"
               placeholder="Enter priority"
               value={process.priority}
               onChange={(e) => setProcess({ ...process, priority: parseInt(e.target.value) })}
-              className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
+              className="bg-gray-700 text-white border border-gray-600 p-2 rounded focus:outline-none focus:border-blue-500 w-full text-sm"
             />
           </div>
           {algorithmstate && (
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <label htmlFor="queueId" className="text-gray-300 font-medium w-full sm:w-32">Queue ID</label>
+            <div className="flex flex-col sm:flex-row items-center gap-2">
+              <label className="text-gray-300 font-medium w-24 text-sm">Queue ID</label>
               <input
                 type="number"
                 placeholder="Enter queue ID"
                 value={process.queueId}
                 onChange={(e) => setProcess({ ...process, queueId: parseInt(e.target.value) })}
-                className="bg-gray-700 text-white border-2 border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 w-full sm:flex-1 transition duration-200"
+                className="bg-gray-700 text-white border border-gray-600 p-2 rounded focus:outline-none focus:border-blue-500 w-full text-sm"
               />
             </div>
           )}
-          <div className="flex flex-col sm:flex-row gap-4 mt-6">
+          <div className="flex gap-2 mt-4">
             <button 
               onClick={handleAddProcess} 
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-blue-800 transition duration-300 w-full sm:flex-1"
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded text-sm flex-1"
             >
-              <MdAdd size={20} />
-              {editMode ? 'Update Process' : 'Add Process'}
+              <MdAdd size={16} />
+              {editMode ? 'Update' : 'Add'}
             </button>
             <button 
               onClick={handleResetQueue} 
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-lg hover:from-red-600 hover:to-red-800 transition duration-300 w-full sm:flex-1"
+              className="flex items-center justify-center gap-1 bg-gradient-to-r from-red-500 to-red-700 text-white px-4 py-2 rounded text-sm flex-1"
             >
-              <MdRefresh size={20} />
-              Reset Queue
+              <MdRefresh size={16} />
+              Reset
             </button>
           </div>
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="w-full lg:w-1/2">
         {processes.length > 0 && (
-          <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
-            <h2 className="text-2xl font-bold text-blue-400 mb-6">Process Queue</h2>
-            <div className="overflow-hidden rounded-xl border-2 border-gray-700">
-              <div className="bg-gray-700 flex gap-4 p-4 font-medium text-gray-200">
+          <div className="bg-gray-800 rounded-lg p-2 sm:p-4 h-full">
+            <h2 className="text-xl font-bold text-blue-400 mb-4">Process Queue</h2>
+            <div className="rounded border border-gray-700">
+              <div className="bg-gray-700 flex gap-2 p-2 text-[10px] sm:text-sm text-gray-200">
                 <div className="flex-1">Process</div>
-                <div className="flex-1">Arrival Time</div>
-                <div className="flex-1">Burst Time</div>
+                <div className="flex-1">Arrival</div>
+                <div className="flex-1">Burst</div>
                 <div className="flex-1">Priority</div>
-                {algorithmstate && <div className="flex-1">Queue ID</div>}
-                <div className="w-24">Actions</div>
+                {algorithmstate && <div className="flex-1">Queue</div>}
+                <div className="w-16">Actions</div>
               </div>
               <div className="divide-y divide-gray-700">
                 {processes.map((proc) => (
-                  <div className="flex items-center gap-4 p-4 hover:bg-gray-700/50 transition duration-200" key={proc.id}>
-                    <div className="flex-1 text-blue-400 font-medium">{proc.id}</div>
+                  <div className="flex items-center gap-2 p-2 hover:bg-gray-700/50 text-[10px] sm:text-sm" key={proc.id}>
+                    <div className="flex-1 text-blue-400">{proc.id}</div>
                     <div className="flex-1 text-gray-300">{proc.arrivalTime}</div>
                     <div className="flex-1 text-gray-300">{proc.burstTime}</div>
                     <div className="flex-1 text-gray-300">{proc.priority}</div>
                     {algorithmstate && <div className="flex-1 text-gray-300">{proc.queueId}</div>}
-                    <div className="w-24 flex gap-3">
+                    <div className="w-16 flex gap-2">
                       <button 
                         onClick={() => handleEditProcess(proc)}
-                        className="text-blue-400 hover:text-blue-300 transition duration-200"
+                        className="text-blue-400 hover:text-blue-300"
                       >
-                        <MdEdit size={20} />
+                        <MdEdit size={16} />
                       </button>
                       <button 
                         onClick={() => handleDeleteProcess(proc.id)}
-                        className="text-red-400 hover:text-red-300 transition duration-200"
+                        className="text-red-400 hover:text-red-300"
                       >
-                        <MdDelete size={20} />
+                        <MdDelete size={16} />
                       </button>
                     </div>
                   </div>

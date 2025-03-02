@@ -14,13 +14,13 @@ function GanttChart({ data }) {
         chartInstanceRef.current.destroy();
       }
 
-      // Generate vibrant pastel colors for processes
+
       const generatePastelColor = () => {
         const hue = Math.floor(Math.random() * 360);
         return `hsla(${hue}, 85%, 75%, 0.85)`;
       };
 
-      // Maintain consistent colors for process IDs
+
       const getProcessColor = (processId) => {
         if (!colorMapRef.current[processId]) {
           colorMapRef.current[processId] = generatePastelColor();
