@@ -25,56 +25,86 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-gray-800 to-gray-900 overflow-x-hidden">
-      <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 md:py-6 lg:py-8 shadow-xl">
-        <div className="container mx-auto px-2 sm:px-4">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center">
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-x-hidden">
+      {/* Header with animated gradient border */}
+      <div className="relative bg-gradient-to-r from-blue-700 to-purple-700 shadow-2xl">
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
             CPU Scheduler Simulator
           </h1>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-400"></div>
+          <p className="text-center text-blue-100 mt-2 max-w-2xl mx-auto">
+            Visualize and analyze different CPU scheduling algorithms
+          </p>
         </div>
+        <div className="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 animate-pulse"></div>
       </div>
 
-      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 lg:py-8">
-        <div className="bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl p-3 sm:p-4 lg:p-6 mb-4 sm:mb-6 lg:mb-8">
-          <AlgorithmSelector 
-            algorithm={algorithm} 
-            setAlgorithm={handleAlgorithmChange} 
-            timeQuantum={timeQuantum} 
-            setTimeQuantum={setTimeQuantum} 
-          />
+      <div className="container mx-auto px-4 py-8">
+        {/* Main content area with glass-morphism effect */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Left panel: Algorithm selection */}
+          <div className="lg:col-span-1">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-xl border border-gray-700/50 p-6 h-full">
+              <AlgorithmSelector 
+                algorithm={algorithm} 
+                setAlgorithm={handleAlgorithmChange} 
+                timeQuantum={timeQuantum} 
+                setTimeQuantum={setTimeQuantum} 
+              />
+            </div>
+          </div>
           
-          <ProcessInputForm 
-            processes={processes} 
-            setProcesses={setProcesses} 
-            timeQuantum={timeQuantum} 
-            setTimeQuantum={setTimeQuantum} 
-            algorithmstate={algorithmstate} 
-            setAlgorithmstate={setAlgorithmstate} 
-          />
-
-          <div className="flex justify-center mt-4 sm:mt-6 lg:mt-8">
-            <button 
-              onClick={handleSimulate} 
-              className="px-4 sm:px-6 lg:px-8 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-base sm:text-lg font-semibold rounded-lg 
-                        transform transition-all duration-300 hover:scale-105 hover:shadow-lg 
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              Simulate
-            </button>
+          {/* Right panel: Process input form */}
+          <div className="lg:col-span-2">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-xl border border-gray-700/50 p-6 h-full">
+              <ProcessInputForm 
+                processes={processes} 
+                setProcesses={setProcesses} 
+                timeQuantum={timeQuantum} 
+                setTimeQuantum={setTimeQuantum} 
+                algorithmstate={algorithmstate} 
+                setAlgorithmstate={setAlgorithmstate} 
+              />
+            </div>
           </div>
         </div>
 
-        <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-          <div className="bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl p-3 sm:p-4 lg:p-6">
+        {/* Simulate button with pulsing effect */}
+        <div className="flex justify-center mb-8">
+          <button 
+            onClick={handleSimulate} 
+            disabled={processes.length === 0}
+            className={`px-8 py-3 text-lg font-bold rounded-full shadow-lg 
+                      ${processes.length === 0 
+                        ? 'bg-gray-600 cursor-not-allowed' 
+                        : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 animate-pulse-slow'} 
+                      transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+          >
+            Simulate
+          </button>
+        </div>
+
+        {/* Results section */}
+        <div className="space-y-6">
+          {/* Metrics display */}
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-xl border border-gray-700/50 p-6">
             <MetricsDisplay metrics={metrics} />
           </div>
 
-          <div className="bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl p-3 sm:p-4 lg:p-6 min-h-[250px] sm:min-h-[300px] lg:min-h-[400px] h-auto">
+          {/* Gantt chart */}
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-xl border border-gray-700/50 p-6 min-h-[300px] lg:min-h-[400px]">
+            <h2 className="text-2xl font-bold text-blue-400 mb-4">Process Timeline</h2>
             <GanttChart data={ganttData} />
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="mt-12 py-6 bg-gray-900/80 border-t border-gray-800">
+        <div className="container mx-auto px-4 text-center text-gray-400">
+          <p>CPU Scheduler Simulator &copy; {new Date().getFullYear()}</p>
+        </div>
+      </footer>
     </div>
   );
 }
