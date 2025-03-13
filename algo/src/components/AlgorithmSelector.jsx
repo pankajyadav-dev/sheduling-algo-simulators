@@ -6,7 +6,7 @@ function AlgorithmSelector({ algorithm, setAlgorithm, timeQuantum, setTimeQuantu
     <div className="w-full">
       <div className="flex items-center mb-4">
         <MdOutlineSpeed className="text-blue-400 text-2xl mr-2" />
-        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
           Scheduling Algorithm
         </h2>
       </div>

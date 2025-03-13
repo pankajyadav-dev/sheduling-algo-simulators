@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-x-hidden">
       {/* Header with animated gradient border */}
-      <div className="relative bg-gradient-to-r from-blue-700 to-purple-700 shadow-2xl">
+      <div className="relative bg-gradient-to-r from-blue-700 to-blue-500 shadow-2xl">
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
             CPU Scheduler Simulator
@@ -36,7 +36,6 @@ function App() {
             Visualize and analyze different CPU scheduling algorithms
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 animate-pulse"></div>
       </div>
 
       <div className="container mx-auto px-4 py-8">
@@ -77,7 +76,7 @@ function App() {
             className={`px-8 py-3 text-lg font-bold rounded-full shadow-lg 
                       ${processes.length === 0 
                         ? 'bg-gray-600 cursor-not-allowed' 
-                        : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 animate-pulse-slow'} 
+                        : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 '} 
                       transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
           >
             Simulate

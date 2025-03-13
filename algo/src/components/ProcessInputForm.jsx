@@ -53,7 +53,7 @@ function ProcessInputForm({ processes, setProcesses, timeQuantum, setTimeQuantum
     <div>
       <div className="flex items-center mb-4">
         <MdOutlineInput className="text-blue-400 text-2xl mr-2" />
-        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
           {editMode ? 'Edit Process' : 'Process Input'}
         </h2>
       </div>
