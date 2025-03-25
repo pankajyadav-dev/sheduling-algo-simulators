@@ -31,6 +31,22 @@ export const calculateScheduling = (processes, algorithm, timeQuantum = 2) => {
   }
 };
 
+const findbestalgo = (processes) => {
+  let algo1=firstComeFirstServed(validProcesses);
+  let algo2 =priorityScheduling(validProcesses);
+  let algo3 =multilevelQueueScheduling(validProcesses, timeQuantum);
+  let algo4 =shortestJobFirst(validProcesses);
+  let algo5 =roundRobin(validProcesses, timeQuantum);
+  let algo6 =shortestRemainingTimeFirst(validProcesses);
+  let algo7 =highestResponseRatioNext(validProcesses);
+  let algo8 =longestJobFirst(validProcesses);
+  let algo9 =longestRemainingTimeFirst(validProcesses);
+  let algo10 =shortestJobNext(validProcesses);
+  let minimiumtrunaroundtime = 0;
+  for(let i=1;i<=10;i++){
+    
+  }
+}
 
 const firstComeFirstServed = (processes) => {
   let schedule = [];
