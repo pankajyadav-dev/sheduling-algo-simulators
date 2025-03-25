@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdQueryStats, MdAccessTime, MdLoop } from 'react-icons/md';
+import { MdQueryStats, MdAccessTime, MdLoop , MdStar } from 'react-icons/md';
 function calculateEfficiencyRating(waitTime, turnaroundTime) {
   let ratio = waitTime / turnaroundTime;
 
@@ -80,6 +80,21 @@ function MetricsDisplay({ metrics }) {
           </div>
           <p className="text-xs text-gray-400 mt-2">
             The average time taken to complete a process from arrival to completion
+          </p>
+        </div>
+
+        <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/20 rounded-xl p-5 border border-blue-700/30 shadow-lg transform transition-transform hover:scale-[1.02] duration-300">
+          <div className="flex items-center mb-2">
+          <MdStar className="text-yellow-400 text-xl mr-2" />
+          <h3 className="text-blue-300 font-medium">Best Algorithm </h3>
+          </div>
+          <div className="flex items-baseline">
+            <p className="text-3xl font-bold text-white">
+              {metrics.bestAlgorithm || 'N/A' }
+            </p>
+          </div>
+          <p className="text-xs text-gray-400 mt-2">
+            The best algorithm used for this case based on the performance metrics
           </p>
         </div>
       </div>

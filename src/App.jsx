@@ -4,19 +4,21 @@ import AlgorithmSelector from './components/AlgorithmSelector';
 import GanttChart from './components/GanttChart';
 import MetricsDisplay from './components/MetricsDisplay';
 import { calculateScheduling } from './utils/schedulingAlgorithms';
+import { calculatebestSchedulingalgo } from './utils/bestshedulingalgorithm';
 
 function App() {
   const [processes, setProcesses] = useState([]);
   const [algorithm, setAlgorithm] = useState('FCFS');
   const [timeQuantum, setTimeQuantum] = useState(1);
   const [ganttData, setGanttData] = useState([]);
-  const [metrics, setMetrics] = useState({ averageWaitingTime: 0, averageTurnaroundTime: 0 });
+  const [metrics, setMetrics] = useState({ averageWaitingTime: 0, averageTurnaroundTime: 0, bestAlgorithm: null });
   const [algorithmstate, setAlgorithmstate] = useState(false);
 
   const handleSimulate = () => {
     const { schedule, avgWaitingTime, avgTurnaroundTime } = calculateScheduling(processes, algorithm, timeQuantum);
     setGanttData(schedule);
-    setMetrics({ averageWaitingTime: avgWaitingTime, averageTurnaroundTime: avgTurnaroundTime });
+    const bestAlgorithm = calculatebestSchedulingalgo(processes, timeQuantum);
+    setMetrics({ averageWaitingTime: avgWaitingTime, averageTurnaroundTime: avgTurnaroundTime , bestAlgorithm: bestAlgorithm});
   };
 
   const handleAlgorithmChange = (newAlgorithm) => {
