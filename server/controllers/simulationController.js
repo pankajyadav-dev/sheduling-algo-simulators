@@ -1,6 +1,5 @@
 import Simulation from '../models/Simulation.js';
 
-// Create a new simulation
 export const createSimulation = async (req, res) => {
   try {
     const { 
@@ -27,8 +26,6 @@ export const createSimulation = async (req, res) => {
     res.status(500).json({ message: 'Error creating simulation', error: error.message });
   }
 };
-
-// Get all simulations
 export const getSimulations = async (req, res) => {
   try {
     const simulations = await Simulation.find().sort({ createdAt: -1 });
@@ -37,8 +34,6 @@ export const getSimulations = async (req, res) => {
     res.status(500).json({ message: 'Error fetching simulations', error: error.message });
   }
 };
-
-// Get a single simulation by ID
 export const getSimulationById = async (req, res) => {
   try {
     const simulation = await Simulation.findById(req.params.id);
@@ -50,8 +45,6 @@ export const getSimulationById = async (req, res) => {
     res.status(500).json({ message: 'Error fetching simulation', error: error.message });
   }
 };
-
-// Update a simulation
 export const updateSimulation = async (req, res) => {
   try {
     const { name } = req.body;
@@ -72,7 +65,6 @@ export const updateSimulation = async (req, res) => {
   }
 };
 
-// Delete a simulation
 export const deleteSimulation = async (req, res) => {
   try {
     const simulation = await Simulation.findByIdAndDelete(req.params.id);

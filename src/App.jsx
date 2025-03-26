@@ -38,12 +38,10 @@ function Simulator() {
     try {
       setLoading(true);
       setError(null);
-      
-      // Make API call to calculate scheduling
+
       const result = await calculateScheduling(processes, algorithm, timeQuantum);
       setGanttData(result.schedule);
       
-      // Make API call to calculate best algorithm
       const bestAlgorithm = await calculateBestAlgorithm(processes, timeQuantum, weights);
       
       setMetrics({
@@ -87,7 +85,7 @@ function Simulator() {
       await saveSimulation(simulationData);
       setSaveSuccess(true);
       
-      // Reset after 3 seconds
+
       setTimeout(() => {
         setSaveSuccess(false);
       }, 3000);
@@ -107,7 +105,7 @@ function Simulator() {
     try {
       const dataUrl = await toPng(resultRef.current, { quality: 0.95 });
       
-      // Create download link
+
       const link = document.createElement('a');
       link.download = `${algorithm}_simulation.png`;
       link.href = dataUrl;
@@ -204,14 +202,6 @@ function Simulator() {
               <div className="flex flex-col gap-4 justify-between items-center mb-4">
                 <MetricsDisplay metrics={metrics} />
                 <div className="flex space-x-2">
-                  <button
-                    onClick={downloadAsImage}
-                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-3 py-2 rounded-lg transition-all duration-200"
-                    title="Download as image"
-                  >
-                    <MdDownload className="text-lg" />
-                    <span>Download</span>
-                  </button>
                   <div className="relative">
                     {saveSuccess && (
                       <div className="absolute -top-10 left-0 right-0 bg-green-900/70 text-white text-center py-1 px-2 rounded-md text-sm">

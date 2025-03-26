@@ -41,8 +41,7 @@ function SimulationDetail() {
     try {
       setDownloadStatus('downloading');
       const dataUrl = await toPng(reportRef.current, { quality: 0.95 });
-      
-      // Create download link
+
       const link = document.createElement('a');
       link.download = `${simulation.name.replace(/\s+/g, '_')}.png`;
       link.href = dataUrl;
@@ -212,7 +211,6 @@ function SimulationDetail() {
                 </thead>
                 <tbody className="divide-y divide-gray-700/30">
                   {simulation.processes.map((process) => {
-                    // Calculate approximate wait time for each process based on gantt data
                     const processGanttEntries = simulation.ganttData.filter(item => item.process === process.id);
                     const firstExecution = processGanttEntries.length > 0 ? processGanttEntries[0].start : 0;
                     const waitTime = Math.max(0, firstExecution - process.arrivalTime);

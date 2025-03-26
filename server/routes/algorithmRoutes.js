@@ -4,7 +4,6 @@ import { calculatebestSchedulingalgo } from '../utils/bestshedulingalgorithm.js'
 
 const router = express.Router();
 
-// Calculate scheduling metrics
 router.post('/calculate', (req, res) => {
   try {
     const { processes, algorithm, timeQuantum } = req.body;
@@ -24,7 +23,6 @@ router.post('/calculate', (req, res) => {
   }
 });
 
-// Calculate best algorithm
 router.post('/best', (req, res) => {
   try {
     const { processes, timeQuantum, weights } = req.body;

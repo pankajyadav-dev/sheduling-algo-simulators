@@ -10,7 +10,6 @@ const api = axios.create({
   }
 });
 
-// Algorithm calculations
 export const calculateScheduling = async (processes, algorithm, timeQuantum) => {
   try {
     const response = await api.post('/algorithms/calculate', {
@@ -39,7 +38,6 @@ export const calculateBestAlgorithm = async (processes, timeQuantum, weights) =>
   }
 };
 
-// Simulation management
 export const saveSimulation = async (data) => {
   try {
     const response = await api.post('/simulations', data);
