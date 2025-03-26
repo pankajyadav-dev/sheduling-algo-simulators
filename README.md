@@ -1,3 +1,16 @@
+# Progess Report
+-Created Frontend Basic interface
+  -setup project by using React-vite and other basic dependencies
+  -Create the basic module of the frontend (processinput , metric, Algorithm selector, Gantchart preview)
+-Created basic javascript logic to process the shedule of the process sets in the form of function
+  -implement all cpu sheduling algorithm as a function in shedulingalgorithm.js
+-Update the Gui and make it more attractive and easy to use to the user
+-Created a backend
+  -setup the Nodejs and created server.js
+  -add the file to calculate the process shecdule and the best algorithm which perform best in this particular case
+  -connect the api.js of frontend to the server.js
+-Host on the vercel both frontend and backend
+
 # CPU Scheduler Simulator
 
 A modern web application for simulating and visualizing various CPU scheduling algorithms. It helps users understand how different scheduling algorithms work and analyze their performance metrics.
@@ -32,20 +45,13 @@ A modern web application for simulating and visualizing various CPU scheduling a
 - **Database**: MongoDB
 
 ## Setup Instructions
-
-### Prerequisites
-
-- Node.js (v14+)
-- MongoDB database
-- npm or yarn
-
 ### Installation
 
 1. Clone the repository:
 
 ```
-git clone <repository-url>
-cd cpu-scheduler-simulator
+git clone https://github.com/pankajyadav-dev/sheduling-algo-simulators.git
+cd sheduling-algo-simulators
 ```
 
 2. Install frontend dependencies:
@@ -66,7 +72,7 @@ npm install
    - Add the following variables:
      ```
      PORT=5000
-     MONGODB_URI=mongodb://localhost:27017/cpuscheduler
+     MONGODB_URI=mongodb://localhost:27017/cpuscheduler 
      ```
    - Replace the MongoDB URI with your own connection string
 
@@ -97,7 +103,5 @@ npm run dev
 6. Save simulations or download the results as images
 7. Access saved simulations from the "Saved Simulations" page
 
-## License
 
-MIT
 
