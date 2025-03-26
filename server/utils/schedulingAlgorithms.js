@@ -1,3 +1,4 @@
+
 export const calculateScheduling = (processes, algorithm, timeQuantum = 2) => {
   const validProcesses = processes.filter(process => process.burstTime > 0);
 
@@ -58,6 +59,7 @@ const firstComeFirstServed = (processes) => {
   const throughput = processes.length / totalBurstTime;
 
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
+
 };
 
 const priorityScheduling = (processes) => {
@@ -108,7 +110,9 @@ const priorityScheduling = (processes) => {
   const throughput = processes.length / currentTime;
 
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
+
 };
+
 
 const multilevelQueueScheduling = (processes, timeQuantum) => {
   let schedule = [];
@@ -182,6 +186,7 @@ const multilevelQueueScheduling = (processes, timeQuantum) => {
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
 };
 
+
 const shortestJobFirst = (processes) => {
   let schedule = [];
   let currentTime = 0;
@@ -197,7 +202,7 @@ const shortestJobFirst = (processes) => {
 
   while (completedProcesses < processes.length) {
     const availableProcesses = remainingProcesses.filter(
-      process => process.arrivalTime <= currentTime && process.remainingTime > 0
+      (process) => process.arrivalTime <= currentTime && process.remainingTime > 0
     );
 
     if (availableProcesses.length === 0) {
@@ -205,29 +210,29 @@ const shortestJobFirst = (processes) => {
       continue;
     }
 
-    const shortestJob = availableProcesses.reduce(
-      (prev, curr) => (curr.burstTime < prev.burstTime ? curr : prev)
+    const nextProcess = availableProcesses.reduce((prev, curr) =>
+      curr.burstTime < prev.burstTime ? curr : prev
     );
 
-    if (shortestJob.startTime === null) {
-      shortestJob.startTime = currentTime;
-      totalResponseTime += shortestJob.startTime - shortestJob.arrivalTime;
+    if (nextProcess.startTime === null) {
+      nextProcess.startTime = currentTime;
+      const responseTime = nextProcess.startTime - nextProcess.arrivalTime;
+      totalResponseTime += responseTime;
     }
 
+    const waitingTime = currentTime - nextProcess.arrivalTime;
+    const turnaroundTime = waitingTime + nextProcess.burstTime;
+
     schedule.push({
-      process: shortestJob.id,
+      process: nextProcess.id,
       start: currentTime,
-      end: currentTime + shortestJob.burstTime,
+      end: currentTime + nextProcess.burstTime,
     });
 
-    const waitingTime = currentTime - shortestJob.arrivalTime;
-    const turnaroundTime = waitingTime + shortestJob.burstTime;
-
-    currentTime += shortestJob.burstTime;
+    currentTime += nextProcess.burstTime;
+    nextProcess.remainingTime = 0;
     totalWaitingTime += waitingTime;
     totalTurnaroundTime += turnaroundTime;
-
-    shortestJob.remainingTime = 0;
     completedProcesses++;
   }
 
@@ -238,6 +243,8 @@ const shortestJobFirst = (processes) => {
 
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
 };
+
+
 
 const roundRobin = (processes, timeQuantum) => {
   let schedule = [];
@@ -246,73 +253,59 @@ const roundRobin = (processes, timeQuantum) => {
   let totalTurnaroundTime = 0;
   let totalResponseTime = 0;
   let completedProcesses = 0;
-  let queue = [];
-  
-  let processesWithRT = processes.map(process => ({
+  let remainingProcesses = processes.map((process) => ({
     ...process,
     remainingTime: process.burstTime,
-    firstRun: true,
     startTime: null,
-    lastRunTime: 0,
   }));
 
-  processesWithRT.sort((a, b) => a.arrivalTime - b.arrivalTime);
-  
   while (completedProcesses < processes.length) {
-    // Add newly arrived processes to the queue
-    const newArrivals = processesWithRT.filter(
-      p => p.arrivalTime <= currentTime && p.remainingTime > 0 && !queue.includes(p)
-    );
-    queue.push(...newArrivals);
-    
-    if (queue.length === 0) {
+    let executedInThisCycle = false;
+
+    for (let i = 0; i < remainingProcesses.length; i++) {
+      const process = remainingProcesses[i];
+
+      if (process.remainingTime > 0 && process.arrivalTime <= currentTime) {
+        if (process.startTime === null) {
+          process.startTime = currentTime;
+          const responseTime = process.startTime - process.arrivalTime;
+          totalResponseTime += responseTime;
+        }
+
+        const executionTime = Math.min(timeQuantum, process.remainingTime);
+        schedule.push({
+          process: process.id,
+          start: currentTime,
+          end: currentTime + executionTime,
+        });
+
+        currentTime += executionTime;
+        process.remainingTime -= executionTime;
+        executedInThisCycle = true;
+
+        if (process.remainingTime === 0) {
+          const turnaroundTime = currentTime - process.arrivalTime;
+          const waitingTime = turnaroundTime - process.burstTime;
+          totalTurnaroundTime += turnaroundTime;
+          totalWaitingTime += waitingTime;
+          completedProcesses++;
+        }
+      }
+    }
+
+    if (!executedInThisCycle) {
       currentTime++;
-      continue;
-    }
-    
-    // Get the next process from the queue
-    const currentProcess = queue.shift();
-    
-    if (currentProcess.startTime === null) {
-      currentProcess.startTime = currentTime;
-      totalResponseTime += currentProcess.startTime - currentProcess.arrivalTime;
-    }
-    
-    // Calculate execution time for this quantum
-    const executionTime = Math.min(timeQuantum, currentProcess.remainingTime);
-    
-    // Update the schedule
-    schedule.push({
-      process: currentProcess.id,
-      start: currentTime,
-      end: currentTime + executionTime,
-    });
-    
-    // Update times
-    currentTime += executionTime;
-    currentProcess.remainingTime -= executionTime;
-    
-    // If process is completed
-    if (currentProcess.remainingTime === 0) {
-      const turnaroundTime = currentTime - currentProcess.arrivalTime;
-      const waitingTime = turnaroundTime - currentProcess.burstTime;
-      
-      totalTurnaroundTime += turnaroundTime;
-      totalWaitingTime += waitingTime;
-      completedProcesses++;
-    } else {
-      // If process still has remaining time, add it back to the queue
-      queue.push(currentProcess);
     }
   }
-  
+
   const avgWaitingTime = totalWaitingTime / processes.length;
   const avgTurnaroundTime = totalTurnaroundTime / processes.length;
   const avgResponseTime = totalResponseTime / processes.length;
   const throughput = processes.length / currentTime;
-  
+
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
 };
+
 
 const shortestRemainingTimeFirst = (processes) => {
   let schedule = [];
@@ -321,18 +314,15 @@ const shortestRemainingTimeFirst = (processes) => {
   let totalTurnaroundTime = 0;
   let totalResponseTime = 0;
   let completedProcesses = 0;
-  let remainingProcesses = processes.map(process => ({
+  let remainingProcesses = processes.map((process) => ({
     ...process,
     remainingTime: process.burstTime,
     startTime: null,
-    lastRun: null,
   }));
-
-  let prevProcess = null;
 
   while (completedProcesses < processes.length) {
     const availableProcesses = remainingProcesses.filter(
-      process => process.arrivalTime <= currentTime && process.remainingTime > 0
+      (process) => process.arrivalTime <= currentTime && process.remainingTime > 0
     );
 
     if (availableProcesses.length === 0) {
@@ -340,36 +330,29 @@ const shortestRemainingTimeFirst = (processes) => {
       continue;
     }
 
-    const shortestRemainingTimeProcess = availableProcesses.reduce(
-      (prev, curr) => (curr.remainingTime < prev.remainingTime ? curr : prev)
+    const nextProcess = availableProcesses.reduce((prev, curr) =>
+      curr.remainingTime < prev.remainingTime ? curr : prev
     );
 
-    if (shortestRemainingTimeProcess.startTime === null) {
-      shortestRemainingTimeProcess.startTime = currentTime;
-      totalResponseTime += shortestRemainingTimeProcess.startTime - shortestRemainingTimeProcess.arrivalTime;
+    if (nextProcess.startTime === null) {
+      nextProcess.startTime = currentTime;
+      const responseTime = nextProcess.startTime - nextProcess.arrivalTime;
+      totalResponseTime += responseTime;
     }
 
-    if (prevProcess !== shortestRemainingTimeProcess.id) {
-      if (prevProcess !== null) {
-        const lastScheduleItem = schedule[schedule.length - 1];
-        lastScheduleItem.end = currentTime;
-      }
-      schedule.push({
-        process: shortestRemainingTimeProcess.id,
-        start: currentTime,
-        end: currentTime + 1,
-      });
-      prevProcess = shortestRemainingTimeProcess.id;
-    } else {
-      schedule[schedule.length - 1].end = currentTime + 1;
-    }
+    const executionTime = 1; 
+    schedule.push({
+      process: nextProcess.id,
+      start: currentTime,
+      end: currentTime + executionTime,
+    });
 
-    shortestRemainingTimeProcess.remainingTime--;
-    currentTime++;
+    currentTime += executionTime;
+    nextProcess.remainingTime -= executionTime;
 
-    if (shortestRemainingTimeProcess.remainingTime === 0) {
-      const turnaroundTime = currentTime - shortestRemainingTimeProcess.arrivalTime;
-      const waitingTime = turnaroundTime - shortestRemainingTimeProcess.burstTime;
+    if (nextProcess.remainingTime === 0) {
+      const turnaroundTime = currentTime - nextProcess.arrivalTime;
+      const waitingTime = turnaroundTime - nextProcess.burstTime;
       totalTurnaroundTime += turnaroundTime;
       totalWaitingTime += waitingTime;
       completedProcesses++;
@@ -384,55 +367,57 @@ const shortestRemainingTimeFirst = (processes) => {
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
 };
 
+
 const highestResponseRatioNext = (processes) => {
   let schedule = [];
   let currentTime = 0;
   let totalWaitingTime = 0;
   let totalTurnaroundTime = 0;
   let totalResponseTime = 0;
-  let remainingProcesses = [...processes];
+  let completedProcesses = 0;
+  let remainingProcesses = processes.map((process) => ({
+    ...process,
+    startTime: null,
+  }));
 
-  remainingProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
-
-  while (remainingProcesses.length > 0) {
+  while (completedProcesses < processes.length) {
     const availableProcesses = remainingProcesses.filter(
-      process => process.arrivalTime <= currentTime
+      (process) => process.arrivalTime <= currentTime
     );
 
     if (availableProcesses.length === 0) {
-      currentTime = remainingProcesses[0].arrivalTime;
+      currentTime++;
       continue;
     }
 
-    // Calculate response ratio for each available process
-    const processWithRR = availableProcesses.map(process => {
-      const waitingTime = currentTime - process.arrivalTime;
-      const responseRatio = (waitingTime + process.burstTime) / process.burstTime;
-      return { ...process, responseRatio };
+    const nextProcess = availableProcesses.reduce((prev, curr) => {
+      const prevRatio = (currentTime - prev.arrivalTime + prev.burstTime) / prev.burstTime;
+      const currRatio = (currentTime - curr.arrivalTime + curr.burstTime) / curr.burstTime;
+      return currRatio > prevRatio ? curr : prev;
     });
 
-    // Select process with highest response ratio
-    const selectedProcess = processWithRR.reduce(
-      (prev, curr) => (curr.responseRatio > prev.responseRatio ? curr : prev)
-    );
+    if (nextProcess.startTime === null) {
+      nextProcess.startTime = currentTime;
+      const responseTime = nextProcess.startTime - nextProcess.arrivalTime;
+      totalResponseTime += responseTime;
+    }
 
-    const waitingTime = currentTime - selectedProcess.arrivalTime;
-    const responseTime = waitingTime;
-    const turnaroundTime = waitingTime + selectedProcess.burstTime;
+    const waitingTime = currentTime - nextProcess.arrivalTime;
+    const turnaroundTime = waitingTime + nextProcess.burstTime;
 
     schedule.push({
-      process: selectedProcess.id,
+      process: nextProcess.id,
       start: currentTime,
-      end: currentTime + selectedProcess.burstTime,
+      end: currentTime + nextProcess.burstTime,
     });
 
-    currentTime += selectedProcess.burstTime;
+    currentTime += nextProcess.burstTime;
     totalWaitingTime += waitingTime;
     totalTurnaroundTime += turnaroundTime;
-    totalResponseTime += responseTime;
+    completedProcesses++;
 
     remainingProcesses = remainingProcesses.filter(
-      process => process.id !== selectedProcess.id
+      (process) => process.id !== nextProcess.id
     );
   }
 
@@ -444,6 +429,7 @@ const highestResponseRatioNext = (processes) => {
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
 };
 
+
 const longestJobFirst = (processes) => {
   let schedule = [];
   let currentTime = 0;
@@ -451,15 +437,14 @@ const longestJobFirst = (processes) => {
   let totalTurnaroundTime = 0;
   let totalResponseTime = 0;
   let completedProcesses = 0;
-  let remainingProcesses = processes.map(process => ({
+  let remainingProcesses = processes.map((process) => ({
     ...process,
-    remainingTime: process.burstTime,
     startTime: null,
   }));
 
   while (completedProcesses < processes.length) {
     const availableProcesses = remainingProcesses.filter(
-      process => process.arrivalTime <= currentTime && process.remainingTime > 0
+      (process) => process.arrivalTime <= currentTime
     );
 
     if (availableProcesses.length === 0) {
@@ -467,30 +452,33 @@ const longestJobFirst = (processes) => {
       continue;
     }
 
-    const longestJob = availableProcesses.reduce(
-      (prev, curr) => (curr.burstTime > prev.burstTime ? curr : prev)
+    const nextProcess = availableProcesses.reduce((prev, curr) =>
+      curr.burstTime > prev.burstTime ? curr : prev
     );
 
-    if (longestJob.startTime === null) {
-      longestJob.startTime = currentTime;
-      totalResponseTime += longestJob.startTime - longestJob.arrivalTime;
+    if (nextProcess.startTime === null) {
+      nextProcess.startTime = currentTime;
+      const responseTime = nextProcess.startTime - nextProcess.arrivalTime;
+      totalResponseTime += responseTime;
     }
 
+    const waitingTime = currentTime - nextProcess.arrivalTime;
+    const turnaroundTime = waitingTime + nextProcess.burstTime;
+
     schedule.push({
-      process: longestJob.id,
+      process: nextProcess.id,
       start: currentTime,
-      end: currentTime + longestJob.burstTime,
+      end: currentTime + nextProcess.burstTime,
     });
 
-    const waitingTime = currentTime - longestJob.arrivalTime;
-    const turnaroundTime = waitingTime + longestJob.burstTime;
-
-    currentTime += longestJob.burstTime;
+    currentTime += nextProcess.burstTime;
     totalWaitingTime += waitingTime;
     totalTurnaroundTime += turnaroundTime;
-
-    longestJob.remainingTime = 0;
     completedProcesses++;
+
+    remainingProcesses = remainingProcesses.filter(
+      (process) => process.id !== nextProcess.id
+    );
   }
 
   const avgWaitingTime = totalWaitingTime / processes.length;
@@ -508,18 +496,15 @@ const longestRemainingTimeFirst = (processes) => {
   let totalTurnaroundTime = 0;
   let totalResponseTime = 0;
   let completedProcesses = 0;
-  let remainingProcesses = processes.map(process => ({
+  let remainingProcesses = processes.map((process) => ({
     ...process,
     remainingTime: process.burstTime,
     startTime: null,
-    lastRun: null,
   }));
-
-  let prevProcess = null;
 
   while (completedProcesses < processes.length) {
     const availableProcesses = remainingProcesses.filter(
-      process => process.arrivalTime <= currentTime && process.remainingTime > 0
+      (process) => process.arrivalTime <= currentTime && process.remainingTime > 0
     );
 
     if (availableProcesses.length === 0) {
@@ -527,36 +512,29 @@ const longestRemainingTimeFirst = (processes) => {
       continue;
     }
 
-    const longestRemainingTimeProcess = availableProcesses.reduce(
-      (prev, curr) => (curr.remainingTime > prev.remainingTime ? curr : prev)
+    const nextProcess = availableProcesses.reduce((prev, curr) =>
+      curr.remainingTime > prev.remainingTime ? curr : prev
     );
 
-    if (longestRemainingTimeProcess.startTime === null) {
-      longestRemainingTimeProcess.startTime = currentTime;
-      totalResponseTime += longestRemainingTimeProcess.startTime - longestRemainingTimeProcess.arrivalTime;
+    if (nextProcess.startTime === null) {
+      nextProcess.startTime = currentTime;
+      const responseTime = nextProcess.startTime - nextProcess.arrivalTime;
+      totalResponseTime += responseTime;
     }
 
-    if (prevProcess !== longestRemainingTimeProcess.id) {
-      if (prevProcess !== null) {
-        const lastScheduleItem = schedule[schedule.length - 1];
-        lastScheduleItem.end = currentTime;
-      }
-      schedule.push({
-        process: longestRemainingTimeProcess.id,
-        start: currentTime,
-        end: currentTime + 1,
-      });
-      prevProcess = longestRemainingTimeProcess.id;
-    } else {
-      schedule[schedule.length - 1].end = currentTime + 1;
-    }
+    const executionTime = 1; 
+    schedule.push({
+      process: nextProcess.id,
+      start: currentTime,
+      end: currentTime + executionTime,
+    });
 
-    longestRemainingTimeProcess.remainingTime--;
-    currentTime++;
+    currentTime += executionTime;
+    nextProcess.remainingTime -= executionTime;
 
-    if (longestRemainingTimeProcess.remainingTime === 0) {
-      const turnaroundTime = currentTime - longestRemainingTimeProcess.arrivalTime;
-      const waitingTime = turnaroundTime - longestRemainingTimeProcess.burstTime;
+    if (nextProcess.remainingTime === 0) {
+      const turnaroundTime = currentTime - nextProcess.arrivalTime;
+      const waitingTime = turnaroundTime - nextProcess.burstTime;
       totalTurnaroundTime += turnaroundTime;
       totalWaitingTime += waitingTime;
       completedProcesses++;
@@ -571,6 +549,8 @@ const longestRemainingTimeFirst = (processes) => {
   return { schedule, avgWaitingTime, avgTurnaroundTime, avgResponseTime, throughput };
 };
 
+
+
 const shortestJobNext = (processes) => {
-  return shortestJobFirst(processes);
-}; 
+  return shortestJobFirst(processes); 
+};

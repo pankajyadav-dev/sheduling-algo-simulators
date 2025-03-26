@@ -2,7 +2,7 @@ import { calculateScheduling } from './schedulingAlgorithms.js';
 
 // This function calculates the best scheduling algorithm based on user-defined weights
 export const calculatebestSchedulingalgo = (processes, timeQuantum, weights) => {
-  const algorithms = ['FCFS', 'SJF', 'Priority', 'RoundRobin', 'SRTF', 'HRRN', 'LJF', 'LRTF'];
+  const algorithms = ['FCFS', 'SJF', 'Priority', 'RoundRobin', 'SRTF', 'HRRN', 'LJF', 'LRTF', 'MultilevelQueue', 'SJN'];
   const results = {};
   
   // Calculate metrics for each algorithm
