@@ -50,7 +50,6 @@ export const calculatebestSchedulingalgo = (processes, timeQuantum = 2, weights 
       bestAlgorithm = algo;
     }
   }
-  console.log(bestAlgorithm);
   return bestAlgorithm;
 };
 
