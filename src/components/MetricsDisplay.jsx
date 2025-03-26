@@ -122,7 +122,7 @@ function MetricsDisplay({ metrics }) {
       )}
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/20 rounded-xl p-5 border border-blue-700/30 shadow-lg transform transition-all hover:shadow-blue-900/10 hover:border-blue-600/40 duration-300">
+      <div className="bg-gradient-to-br from-cyan-900/30 to-cyan-800/20 rounded-xl p-5 border border-cyan-700/30 shadow-lg transform transition-all hover:shadow-cyan-900/10 hover:border-cyan-600/40 duration-300">
           <div className="flex items-center mb-3">
             <div className="p-2 bg-blue-500/20 rounded-lg mr-3">
               <MdAccessTime className="text-blue-400 text-xl" />
@@ -141,7 +141,7 @@ function MetricsDisplay({ metrics }) {
           </p>
         </div>
         
-        <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 rounded-xl p-5 border border-purple-700/30 shadow-lg transform transition-all hover:shadow-purple-900/10 hover:border-purple-600/40 duration-300">
+        <div className="bg-gradient-to-br from-cyan-900/30 to-cyan-800/20 rounded-xl p-5 border border-cyan-700/30 shadow-lg transform transition-all hover:shadow-cyan-900/10 hover:border-cyan-600/40 duration-300">
           <div className="flex items-center mb-3">
             <div className="p-2 bg-purple-500/20 rounded-lg mr-3">
               <MdLoop className="text-purple-400 text-xl" />
@@ -160,7 +160,7 @@ function MetricsDisplay({ metrics }) {
           </p>
         </div>
         
-        <div className="bg-gradient-to-br from-green-900/30 to-green-800/20 rounded-xl p-5 border border-green-700/30 shadow-lg transform transition-all hover:shadow-green-900/10 hover:border-green-600/40 duration-300">
+        <div className="bg-gradient-to-br from-cyan-900/30 to-cyan-800/20 rounded-xl p-5 border border-cyan-700/30 shadow-lg transform transition-all hover:shadow-cyan-900/10 hover:border-cyan-600/40 duration-300">
           <div className="flex items-center mb-3">
             <div className="p-2 bg-green-500/20 rounded-lg mr-3">
               <MdTimer className="text-green-400 text-xl" />
@@ -198,7 +198,7 @@ function MetricsDisplay({ metrics }) {
           </p>
         </div>
 
-        <div className="bg-gradient-to-br from-amber-900/30 to-amber-800/20 rounded-xl p-5 border border-amber-700/30 shadow-lg transform transition-all hover:shadow-amber-900/10 hover:border-amber-600/40 duration-300 sm:col-span-2 lg:col-span-1">
+        <div className="bg-gradient-to-br from-cyan-900/30 to-cyan-800/20 rounded-xl p-5 border border-cyan-700/30 shadow-lg transform transition-all hover:shadow-cyan-900/10 hover:border-cyan-600/40 duration-300">
           <div className="flex items-center mb-3">
             <div className="p-2 bg-amber-500/20 rounded-lg mr-3">
               <MdStar className="text-amber-400 text-xl" />
