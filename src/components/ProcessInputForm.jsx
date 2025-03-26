@@ -59,7 +59,6 @@ function ProcessInputForm({ processes, setProcesses, timeQuantum, setTimeQuantum
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Process Input Form */}
         <div className="bg-gray-800/70 rounded-xl p-5 border border-gray-700/50 shadow-lg">
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -151,7 +150,6 @@ function ProcessInputForm({ processes, setProcesses, timeQuantum, setTimeQuantum
           </div>
         </div>
         
-        {/* Process List */}
         <div className="bg-gray-800/70 rounded-xl p-5 border border-gray-700/50 shadow-lg">
           <div className="flex items-center mb-3">
             <MdList className="text-blue-400 text-xl mr-2" />
