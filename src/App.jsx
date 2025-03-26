@@ -53,8 +53,7 @@ function Simulator() {
         throughput: result.throughput,
         bestAlgorithm: bestAlgorithm
       });
-      
-      // Set default save name
+
       setSaveName(`${algorithm} Simulation ${new Date().toLocaleString()}`);
       setSaveSuccess(false);
     } catch (error) {
@@ -202,7 +201,7 @@ function Simulator() {
         {ganttData.length > 0 && (
           <div ref={resultRef} className="space-y-6">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-xl border border-gray-700/50 p-6">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex flex-col gap-4 justify-between items-center mb-4">
                 <MetricsDisplay metrics={metrics} />
                 <div className="flex space-x-2">
                   <button

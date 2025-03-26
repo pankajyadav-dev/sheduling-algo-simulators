@@ -80,7 +80,7 @@ function MetricsDisplay({ metrics }) {
   );
 
   return (
-    <div>
+    <div className='mb-8'>
       <div className="flex items-center mb-6">
         <MdAssessment className="text-blue-400 text-2xl md:text-3xl mr-2" />
         <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
@@ -91,11 +91,6 @@ function MetricsDisplay({ metrics }) {
       {metrics.averageWaitingTime > 0 && (
         <div className="mb-8">
           <div className="relative overflow-hidden bg-gray-800/70 rounded-xl border border-gray-700/50 shadow-lg">
-            <div 
-              className={`absolute top-0 left-0 h-1 bg-gradient-to-r ${colorGradient}`}
-              style={{ width: `${efficiencyPercentage}%` }}
-            ></div>
-            
             <div className="p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                 <div>
@@ -219,17 +214,6 @@ function MetricsDisplay({ metrics }) {
           <p className="text-xs text-gray-400 mt-1">
             The recommended algorithm based on the performance metrics and weights
           </p>
-        </div>
-      </div>
-      
-      <div className="mt-6 grid grid-cols-2 gap-4 text-center text-xs text-gray-400">
-        <div className="bg-gray-800/30 rounded-lg py-2 px-4 border border-gray-700/20">
-          <div className="font-medium mb-1">Wait Time/Turnaround Ratio</div>
-          <div className="text-white text-sm">{((metrics.averageWaitingTime / (metrics.averageTurnaroundTime || 1)) * 100).toFixed(1)}%</div>
-        </div>
-        <div className="bg-gray-800/30 rounded-lg py-2 px-4 border border-gray-700/20">
-          <div className="font-medium mb-1">CPU Utilization</div>
-          <div className="text-white text-sm">{Math.min(100, Math.max(0, 100 - (metrics.averageWaitingTime / (metrics.averageTurnaroundTime || 1) * 100))).toFixed(1)}%</div>
         </div>
       </div>
     </div>

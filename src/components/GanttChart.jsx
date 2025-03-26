@@ -166,32 +166,13 @@ function GanttChart({ data }) {
               <span className="font-semibold">Total Processes:</span> {data.length}
             </p>
           </div>
-          <div className="text-xs text-gray-400">
-            Hover over bars for detailed information
-          </div>
         </div>
         
         <div className="relative" style={{ height: '380px', width: '100%' }}>
           <canvas ref={chartRef} />
         </div>
         
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-          {data.slice(0, 5).map((item, index) => (
-            <div key={index} className="flex items-center">
-              <div 
-                className="w-3 h-3 rounded-full mr-2" 
-                style={{ backgroundColor: colorMapRef.current[item.process] || 'rgba(100, 120, 220, 0.8)' }}
-              ></div>
-              <span className="text-xs text-gray-300">P{item.process}</span>
-            </div>
-          ))}
-          {data.length > 5 && (
-            <div className="flex items-center">
-              <div className="w-3 h-3 rounded-full mr-2 bg-gray-500"></div>
-              <span className="text-xs text-gray-300">+{data.length - 5} more</span>
-            </div>
-          )}
-        </div>
+        
       </div>
     </div>
   );
