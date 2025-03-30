@@ -1,14 +1,22 @@
 # Progess Report
+
 ## Created Frontend Basic interface
   - setup project by using React-vite and other basic dependencies
   - Create the basic module of the frontend (processinput , metric, Algorithm selector, Gantchart preview)
+
+
 ## Created basic javascript logic to process the shedule of the process sets in the form of function
   - implement all cpu sheduling algorithm as a function in shedulingalgorithm.js
+
+
 ## Update the Gui and make it more attractive and easy to use to the user
+
+
 ## ceated a backend
   - setup the Nodejs and created server.js
   - add the file to calculate the process shecdule and the best algorithm which perform best in this particular case
   - connect the api.js of frontend to the server.js
+  
 ## Host on the vercel both frontend and backend
 
 # CPU Scheduler Simulator
@@ -74,7 +82,6 @@ npm install
      PORT=5000
      MONGODB_URI=mongodb://localhost:27017/cpuscheduler 
      ```
-   - Replace the MongoDB URI with your own connection string
 
 ### Running the Application
 
@@ -91,7 +98,6 @@ npm run dev
 npm run dev
 ```
 
-3. Open your browser and navigate to `http://localhost:5173`
 
 ## Usage
 
